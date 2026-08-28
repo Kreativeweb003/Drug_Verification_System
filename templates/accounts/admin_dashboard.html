@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<section class="page">
+  <div class="page-header">
+    <p class="eyebrow">Administration</p>
+    <h1>Pending approvals</h1>
+  </div>
+  {% if pending_users %}
+  <table class="table">
+    <thead><tr><th>Username</th><th>Role</th><th>Email</th><th></th></tr></thead>
+    <tbody>
+      {% for u in pending_users %}
+      <tr>
+        <td>{{ u.username }}</td>
+        <td><span class="badge">{{ u.get_role_display }}</span></td>
+        <td>{{ u.email }}</td>
+        <td><a href="{% url 'accounts:approve_user' u.id %}" class="btn btn-small btn-outline">Verify account</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="empty-state">No accounts awaiting approval.</p>
+  {% endif %}
+</section>
+{% endblock %}

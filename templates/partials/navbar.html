@@ -1,0 +1,36 @@
+<header class="site-header">
+  <div class="nav-inner">
+    <a href="{% url 'home' %}" class="brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-text">NAFDAC<span class="brand-sub">Verify</span></span>
+    </a>
+    <nav class="nav-links">
+      {% if user.is_authenticated %}
+        {% if user.is_admin %}
+          <a href="{% url 'accounts:admin_dashboard' %}">Admin</a>
+          <a href="{% url 'manufacturers:manufacturer_list' %}">Manufacturers</a>
+          <a href="{% url 'verification:scan_history' %}">Scan Log</a>
+          <a href="{% url 'verification:flag_list' %}">Flags</a>
+          <a href="{% url 'reports:dashboard' %}">Reports</a>
+        {% elif user.is_officer %}
+          <a href="{% url 'accounts:officer_dashboard' %}">Dashboard</a>
+          <a href="{% url 'manufacturers:manufacturer_list' %}">Manufacturers</a>
+          <a href="{% url 'verification:scan_history' %}">Scan Log</a>
+          <a href="{% url 'verification:flag_list' %}">Flags</a>
+          <a href="{% url 'reports:dashboard' %}">Reports</a>
+        {% elif user.is_manufacturer %}
+          <a href="{% url 'manufacturers:profile_detail' %}">My Company</a>
+          <a href="{% url 'drugs:drug_list' %}">My Drugs</a>
+        {% else %}
+          <a href="{% url 'drugs:public_search' %}">Find a Drug</a>
+        {% endif %}
+        <a href="{% url 'accounts:profile' %}">{{ user.username }}</a>
+        <a href="{% url 'accounts:logout' %}" class="nav-cta">Log out</a>
+      {% else %}
+        <a href="{% url 'drugs:public_search' %}">Find a Drug</a>
+        <a href="{% url 'accounts:login' %}">Log in</a>
+        <a href="{% url 'accounts:register' %}" class="nav-cta">Register</a>
+      {% endif %}
+    </nav>
+  </div>
+</header>

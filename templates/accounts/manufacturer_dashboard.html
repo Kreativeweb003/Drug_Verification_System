@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Manufacturer Dashboard{% endblock %}
+{% block content %}
+<section class="page">
+  <div class="page-header">
+    <p class="eyebrow">Manufacturer</p>
+    <h1>Dashboard</h1>
+  </div>
+  <div class="grid grid-2">
+    <a href="{% url 'manufacturers:profile_detail' %}" class="stat-card"><h2>Company profile</h2><p>License status and details.</p></a>
+    <a href="{% url 'drugs:drug_list' %}" class="stat-card"><h2>My drugs</h2><p>Registered products and batches.</p></a>
+  </div>
+</section>
+{% endblock %}

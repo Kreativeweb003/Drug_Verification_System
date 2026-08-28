@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Officer Dashboard{% endblock %}
+{% block content %}
+<section class="page">
+  <div class="page-header">
+    <p class="eyebrow">NAFDAC Officer</p>
+    <h1>Dashboard</h1>
+  </div>
+  <div class="grid grid-3">
+    <a href="{% url 'manufacturers:manufacturer_list' %}" class="stat-card"><h2>Manufacturers</h2><p>Review licenses and compliance.</p></a>
+    <a href="{% url 'verification:scan_history' %}" class="stat-card"><h2>Scan Log</h2><p>Audit trail of every verification.</p></a>
+    <a href="{% url 'verification:flag_list' %}" class="stat-card"><h2>Open Flags</h2><p>Investigate suspicious activity.</p></a>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Edit Company Profile{% endblock %}
+{% block content %}
+<section class="form-page">
+  <div class="form-card">
+    <p class="eyebrow">Manufacturer</p>
+    <h1>Edit company profile</h1>
+    <p class="form-note">Editing core details will resend your profile for NAFDAC review.</p>
+    <form method="post" enctype="multipart/form-data" novalidate>
+      {% csrf_token %}
+      {% for field in form %}
+      <div class="form-group">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% for error in field.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+      </div>
+      {% endfor %}
+      <button type="submit" class="btn btn-primary btn-block">Save &amp; resubmit</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Counterfeit Flags{% endblock %}
+{% block content %}
+<section class="page">
+  <div class="page-header"><p class="eyebrow">Investigation queue</p><h1>Open flags</h1></div>
+  {% for flag in flags %}
+  <div class="flag-card">
+    <div>
+      <p class="flag-code mono">{{ flag.verification_code.code }}</p>
+      <p>{{ flag.verification_code.batch.drug.name }} &middot; {{ flag.verification_code.batch.drug.manufacturer.company_name }}</p>
+      <p class="field-hint">{{ flag.reason }}</p>
+    </div>
+    <form method="post" action="{% url 'verification:flag_resolve' flag.pk %}" class="flag-actions">
+      {% csrf_token %}
+      <button type="submit" name="status" value="investigating" class="btn btn-small btn-outline">Investigate</button>
+      <button type="submit" name="status" value="resolved" class="btn btn-small btn-outline">Resolve</button>
+      <button type="submit" name="status" value="dismissed" class="btn btn-small btn-outline">Dismiss</button>
+    </form>
+  </div>
+  {% empty %}
+  <p class="empty-state">No open flags.</p>
+  {% endfor %}
+</section>
+{% endblock %}

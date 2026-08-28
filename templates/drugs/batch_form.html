@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}New Batch — {{ drug.name }}{% endblock %}
+{% block content %}
+<section class="form-page">
+  <div class="form-card">
+    <p class="eyebrow">{{ drug.name }}</p>
+    <h1>Record a new batch</h1>
+    <p class="form-note">A unique verification code is generated for every unit produced.</p>
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {% for field in form %}
+      <div class="form-group">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% for error in field.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+      </div>
+      {% endfor %}
+      <button type="submit" class="btn btn-primary btn-block">Create batch &amp; generate codes</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

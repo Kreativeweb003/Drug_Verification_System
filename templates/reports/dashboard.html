@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Reports Dashboard{% endblock %}
+{% block content %}
+<section class="page">
+  <div class="page-header"><p class="eyebrow">Overview</p><h1>Reports &amp; analytics</h1></div>
+  <div class="grid grid-4">
+    <div class="stat-card stat-card--static"><h2>{{ stats.total_scans }}</h2><p>Total scans</p></div>
+    <div class="stat-card stat-card--static"><h2>{{ stats.open_flags }}</h2><p>Open flags</p></div>
+    <div class="stat-card stat-card--static"><h2>{{ stats.approved_manufacturers }}/{{ stats.total_manufacturers }}</h2><p>Manufacturers approved</p></div>
+    <div class="stat-card stat-card--static"><h2>{{ stats.total_drugs }}</h2><p>Active drugs</p></div>
+  </div>
+
+  <h2 class="section-title">Most flagged drugs</h2>
+  <table class="table">
+    <thead><tr><th>Drug</th><th>Flags</th></tr></thead>
+    <tbody>
+      {% for row in top_flagged %}
+      <tr><td>{{ row.verification_code__batch__drug__name }}</td><td>{{ row.flag_count }}</td></tr>
+      {% empty %}
+      <tr><td colspan="2" class="empty-state">No flags recorded.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="page-header">
+    <a href="{% url 'reports:generate_counterfeit' %}" class="btn btn-outline">Generate counterfeit summary PDF</a>
+    <a href="{% url 'reports:generate_compliance' %}" class="btn btn-outline">Generate compliance PDF</a>
+    <a href="{% url 'reports:report_list' %}" class="btn btn-outline">View generated reports</a>
+  </div>
+</section>
+{% endblock %}

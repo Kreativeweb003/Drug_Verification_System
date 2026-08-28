@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Review {{ manufacturer.company_name }}{% endblock %}
+{% block content %}
+<section class="page">
+  <div class="page-header">
+    <p class="eyebrow">License review</p>
+    <h1>{{ manufacturer.company_name }}</h1>
+  </div>
+  <dl class="detail-list">
+    <div><dt>License No.</dt><dd class="mono">{{ manufacturer.nafdac_license_number }}</dd></div>
+    <div><dt>Current status</dt><dd><span class="badge badge--{{ manufacturer.license_status }}">{{ manufacturer.get_license_status_display }}</span></dd></div>
+    <div><dt>Document</dt><dd><a href="{{ manufacturer.license_document.url }}" target="_blank">View license document</a></dd></div>
+  </dl>
+  <form method="post" class="form-card form-card--flush">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="form-group">
+      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+      {{ field }}
+    </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">Submit decision</button>
+  </form>
+</section>
+{% endblock %}

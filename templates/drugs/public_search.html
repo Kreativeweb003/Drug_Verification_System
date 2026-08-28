@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Find a Drug{% endblock %}
+{% block content %}
+<section class="page">
+  <div class="page-header">
+    <p class="eyebrow">Registry lookup</p>
+    <h1>Find a registered drug</h1>
+  </div>
+  <form method="get" class="search-form">
+    <input type="text" name="q" value="{{ query }}" placeholder="Drug name, generic name, or NAFDAC number" class="input">
+    <button type="submit" class="btn btn-primary">Search</button>
+  </form>
+  {% if query %}
+  <div class="grid grid-3">
+    {% for drug in drugs %}
+    <div class="stat-card">
+      <h2>{{ drug.name }}</h2>
+      <p>{{ drug.strength }} &middot; {{ drug.manufacturer.company_name }}</p>
+      <p class="mono small">{{ drug.nafdac_reg_number }}</p>
+    </div>
+    {% empty %}
+    <p class="empty-state">No matching drugs found.</p>
+    {% endfor %}
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

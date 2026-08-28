@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Batch {{ batch.batch_number }}{% endblock %}
+{% block content %}
+<section class="page">
+  <div class="page-header">
+    <p class="eyebrow">{{ batch.drug.name }}</p>
+    <h1>Batch {{ batch.batch_number }}</h1>
+    <p>{{ batch.quantity_produced }} units &middot; expires {{ batch.expiry_date }}</p>
+    {% if user.is_admin or user.is_officer %}
+    <form method="post" action="{% url 'drugs:batch_recall' batch.pk %}" onsubmit="return confirm('Deactivate every code in this batch?');">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">Recall batch</button>
+    </form>
+    {% endif %}
+  </div>
+  <h2 class="section-title">Verification codes ({{ codes.count }})</h2>
+  <div class="code-grid">
+    {% for c in codes %}
+    <span class="code-chip {% if not c.is_active %}code-chip--inactive{% endif %}">{{ c.code }}</span>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

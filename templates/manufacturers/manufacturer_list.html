@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Manufacturers{% endblock %}
+{% block content %}
+<section class="page">
+  <div class="page-header"><p class="eyebrow">Registry</p><h1>Manufacturers</h1></div>
+  <table class="table">
+    <thead><tr><th>Company</th><th>License No.</th><th>Status</th><th>Expiry</th><th></th></tr></thead>
+    <tbody>
+      {% for m in manufacturers %}
+      <tr>
+        <td>{{ m.company_name }}</td>
+        <td class="mono">{{ m.nafdac_license_number }}</td>
+        <td><span class="badge badge--{{ m.license_status }}">{{ m.get_license_status_display }}</span></td>
+        <td>{{ m.license_expiry_date }}</td>
+        <td><a href="{% url 'manufacturers:manufacturer_review' m.pk %}" class="btn btn-small btn-outline">Review</a></td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="5" class="empty-state">No manufacturers registered yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

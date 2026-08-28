@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Drugs{% endblock %}
+{% block content %}
+<section class="page">
+  <div class="page-header">
+    <p class="eyebrow">Registry</p>
+    <h1>{% if user.is_manufacturer %}My drugs{% else %}Registered drugs{% endif %}</h1>
+    {% if user.is_manufacturer %}<a href="{% url 'drugs:drug_create' %}" class="btn btn-primary">Register a drug</a>{% endif %}
+  </div>
+  <div class="grid grid-3">
+    {% for drug in drugs %}
+    <a href="{% url 'drugs:drug_detail' drug.pk %}" class="stat-card">
+      <h2>{{ drug.name }}</h2>
+      <p>{{ drug.strength }} &middot; {{ drug.get_dosage_form_display }}</p>
+      <p class="mono small">{{ drug.nafdac_reg_number }}</p>
+    </a>
+    {% empty %}
+    <p class="empty-state">No drugs registered yet.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

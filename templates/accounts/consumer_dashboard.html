@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}My Account{% endblock %}
+{% block content %}
+<section class="page">
+  <div class="page-header">
+    <p class="eyebrow">Welcome</p>
+    <h1>{{ user.username }}</h1>
+  </div>
+  <div class="grid grid-2">
+    <a href="{% url 'home' %}" class="stat-card"><h2>Verify a drug</h2><p>Check a code on a pack.</p></a>
+    <a href="{% url 'drugs:public_search' %}" class="stat-card"><h2>Search the registry</h2><p>Look up a registered drug.</p></a>
+  </div>
+</section>
+{% endblock %}

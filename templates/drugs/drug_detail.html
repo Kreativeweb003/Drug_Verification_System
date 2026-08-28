@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}{{ drug.name }}{% endblock %}
+{% block content %}
+<section class="page">
+  <div class="page-header">
+    <p class="eyebrow">{{ drug.nafdac_reg_number }}</p>
+    <h1>{{ drug.name }}</h1>
+    <p>{{ drug.generic_name }} &middot; {{ drug.strength }} &middot; {{ drug.get_dosage_form_display }}</p>
+    {% if user.is_manufacturer and drug.manufacturer.user == user %}
+    <a href="{% url 'drugs:batch_create' drug.pk %}" class="btn btn-primary">Add batch</a>
+    {% endif %}
+  </div>
+  <h2 class="section-title">Batches</h2>
+  <table class="table">
+    <thead><tr><th>Batch No.</th><th>Manufactured</th><th>Expires</th><th>Units</th><th></th></tr></thead>
+    <tbody>
+      {% for batch in batches %}
+      <tr>
+        <td class="mono">{{ batch.batch_number }}</td>
+        <td>{{ batch.manufacture_date }}</td>
+        <td>{{ batch.expiry_date }}</td>
+        <td>{{ batch.quantity_produced }}</td>
+        <td><a href="{% url 'drugs:batch_detail' batch.pk %}" class="btn btn-small btn-outline">View</a></td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="5" class="empty-state">No batches recorded.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}Verify a Drug — NAFDAC{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="hero-inner">
+    <p class="eyebrow">Official Verification Portal</p>
+    <h1>Is your medicine genuine?</h1>
+    <p class="hero-lede">Find the code printed or scratched onto the pack and enter it below. We'll check it against the National Drug Registry instantly.</p>
+
+    <form method="post" class="verify-form" novalidate>
+      {% csrf_token %}
+      <label for="{{ form.code.id_for_label }}" class="visually-hidden">Verification code</label>
+      {{ form.code }}
+      <button type="submit" class="btn btn-primary">Verify code</button>
+    </form>
+    {% if form.code.errors %}
+      <p class="field-error">{{ form.code.errors.0 }}</p>
+    {% endif %}
+  </div>
+</section>
+
+{% if result %}
+<section class="result-section result-section--{{ result.result }}">
+  <div class="result-inner">
+    <div class="seal seal--{{ result.result }}" aria-hidden="true">
+      <span class="seal-icon">
+        {% if result.result == 'authentic' %}&#10003;{% elif result.result == 'suspicious' %}!{% else %}&times;{% endif %}
+      </span>
+    </div>
+    <div class="result-copy">
+      <p class="result-status">
+        {% if result.result == 'authentic' %}Authentic
+        {% elif result.result == 'suspicious' %}Flagged for review
+        {% elif result.result == 'expired' %}Expired
+        {% elif result.result == 'recalled' %}Recalled
+        {% else %}Not found{% endif %}
+      </p>
+      <p class="result-message">{{ result.message }}</p>
+      {% if result.drug %}
+      <dl class="result-details">
+        <div><dt>Drug</dt><dd>{{ result.drug.name }} ({{ result.drug.strength }})</dd></div>
+        <div><dt>Manufacturer</dt><dd>{{ result.manufacturer.company_name|default:result.drug.manufacturer.company_name }}</dd></div>
+        <div><dt>Batch</dt><dd>{{ result.batch.batch_number }}</dd></div>
+        <div><dt>Expiry</dt><dd>{{ result.batch.expiry_date }}</dd></div>
+      </dl>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<section class="info-strip">
+  <div class="info-strip-inner">
+    <div><h3>01</h3><p>Locate the code on the pack, blister, or label.</p></div>
+    <div><h3>02</h3><p>Enter it exactly as printed, dashes included.</p></div>
+    <div><h3>03</h3><p>Report any mismatch to your nearest NAFDAC office.</p></div>
+  </div>
+</section>
+{% endblock %}
