@@ -10,32 +10,27 @@ from . import services
 @login_required
 def drug_list_view(request):
     if request.user.is_manufacturer:
+        if not hasattr(request.user, 'manufacturer_profile'):
+            messages.info(request, "Complete your company profile before managing drugs.")
+            return redirect('manufacturers:create_profile')
         manufacturer = request.user.manufacturer_profile
         drugs = services.get_drugs_for_manufacturer(manufacturer)
     else:
         drugs = Drug.objects.filter(is_active=True)
     return render(request, 'drugs/drug_list.html', {'drugs': drugs})
 
-
 @login_required
 def drug_create_view(request):
     if not request.user.is_manufacturer:
         return redirect('accounts:login')
+    if not hasattr(request.user, 'manufacturer_profile'):
+        messages.info(request, "Complete your company profile before registering drugs.")
+        return redirect('manufacturers:create_profile')
     manufacturer = request.user.manufacturer_profile
     if not manufacturer.is_license_active:
         messages.error(request, "Your NAFDAC license must be approved and active before registering drugs.")
         return redirect('manufacturers:profile_detail')
-
-    if request.method == 'POST':
-        form = DrugForm(request.POST)
-        if form.is_valid():
-            drug = services.create_drug(manufacturer, form)
-            messages.success(request, f"{drug.name} registered successfully.")
-            return redirect('drugs:drug_detail', pk=drug.pk)
-    else:
-        form = DrugForm()
-    return render(request, 'drugs/drug_form.html', {'form': form})
-
+    ...
 
 @login_required
 def drug_detail_view(request, pk):
