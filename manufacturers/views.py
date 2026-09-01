@@ -29,7 +29,10 @@ def create_profile_view(request):
 def profile_detail_view(request):
     if not request.user.is_manufacturer:
         return redirect('accounts:login')
-    manufacturer = get_object_or_404(Manufacturer, user=request.user)
+    if not hasattr(request.user, 'manufacturer_profile'):
+        messages.info(request, "Complete your company profile to continue.")
+        return redirect('manufacturers:create_profile')
+    manufacturer = request.user.manufacturer_profile
     return render(request, 'manufacturers/profile_detail.html', {'manufacturer': manufacturer})
 
 
@@ -37,7 +40,10 @@ def profile_detail_view(request):
 def edit_profile_view(request):
     if not request.user.is_manufacturer:
         return redirect('accounts:login')
-    manufacturer = get_object_or_404(Manufacturer, user=request.user)
+    if not hasattr(request.user, 'manufacturer_profile'):
+        messages.info(request, "Complete your company profile to continue.")
+        return redirect('manufacturers:create_profile')
+    manufacturer = request.user.manufacturer_profile
 
     if request.method == 'POST':
         form = ManufacturerProfileForm(request.POST, request.FILES, instance=manufacturer)
